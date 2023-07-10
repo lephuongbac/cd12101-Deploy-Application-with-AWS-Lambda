@@ -16,7 +16,7 @@ provider:
     TODOS_TABLE: Todos-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
     INDEX_NAME: TodoIdIndex
-    ATTACHMENT_S3_BUCKET: todobucket-${self:provider.stage}
+    ATTACHMENT_S3_BUCKET: todo-abdrew
 
 functions:
   Auth:

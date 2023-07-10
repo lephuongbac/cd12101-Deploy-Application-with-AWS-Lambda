@@ -13,6 +13,6 @@ export async function handler(event) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true
     },
-    body: JSON.stringify(result, null, 2)
+    body: JSON.stringify({ item: result }, null, 2)
   }
 }

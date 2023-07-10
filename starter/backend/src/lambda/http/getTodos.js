@@ -9,6 +9,10 @@ export async function handler(event) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true
     },
-    body: JSON.stringify(await todoModel.getAll(getUserId(event)), null, 2)
+    body: JSON.stringify(
+      { items: await todoModel.getAll(getUserId(event)) },
+      null,
+      2
+    )
   }
 }

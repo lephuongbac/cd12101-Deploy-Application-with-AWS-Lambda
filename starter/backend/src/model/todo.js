@@ -64,12 +64,20 @@ export class TodoModel {
         }
       },
       KeyConditionExpression: 'userId = :userId',
-      // ProjectionExpression: 'userId',
       TableName: this.tableName
     }
     console.log(params)
     const result = await docClient.send(new QueryCommand(params))
-    return result.Items
+    return result.Items.map((item) => {
+      return {
+        todoId: item.todoId.S,
+        createdAt: item.createdAt.S,
+        name: item.name?.S,
+        dueDate: item.dueDate?.S,
+        done: item.done?.B,
+        attachmentUrl: item.attachmentUrl?.S
+      }
+    })
   }
   async update(todoUpdate, todoId, userId) {
     logger.info('Updating a todo', todoUpdate)

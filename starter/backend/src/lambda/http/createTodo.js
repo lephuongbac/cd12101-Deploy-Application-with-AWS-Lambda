@@ -11,6 +11,6 @@ export async function handler(event, context, callback) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true
     },
-    body: JSON.stringify(newTodo)
+    body: JSON.stringify({ item: newTodo })
   }
 }
