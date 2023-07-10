@@ -1,6 +1,6 @@
 import { todoModel } from '../../model/todo.js'
 
-export function handler(event) {
+export async function handler(event) {
   const todoId = event.pathParameters.todoId
   console.log('deleteTodo', todoId)
   return {

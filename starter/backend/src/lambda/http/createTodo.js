@@ -1,10 +1,11 @@
 import { todoModel } from '../../model/todo.js'
+import { getUserId } from '../auth/jwt.js'
 
 export async function handler(event, context, callback) {
   const newTodo = JSON.parse(event.body)
-  // const jwtToken = event.headers.Authorization.split(' ')[1]
+  // const jwtToken = event.headers.authorization || event.headers.Authorization.split(' ')[1]
   // TODO: Implement creating a new TODO item
-  await todoModel.create(newTodo)
+  await todoModel.create(newTodo, getUserId(event))
   return {
     statusCode: 201,
     headers: {

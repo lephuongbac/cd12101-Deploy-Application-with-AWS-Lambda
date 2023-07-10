@@ -29,7 +29,7 @@ functions:
       - http:
           method: get
           path: todos
-          # authorizer: Auth
+          authorizer: Auth
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -44,7 +44,7 @@ functions:
           method: post
           path: todos
           cors: true
-          # authorizer: Auth
+          authorizer: Auth
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -89,6 +89,7 @@ functions:
           method: post
           path: todos/{todoId}/attachment
           cors: true
+          authorizer: Auth
     iamRoleStatements:
       - Effect: Allow
         Action:

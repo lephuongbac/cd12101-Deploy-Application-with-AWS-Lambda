@@ -1,6 +1,9 @@
 import Axios from 'axios'
-import jsonwebtoken from 'jsonwebtoken'
+import pkg from 'jsonwebtoken'
+const { decode, verify } = pkg
 import { createLogger } from '../../utils/logger.mjs'
+// const jwkToPem = require('jwk-to-pem')
+import jwkToPem from 'jwk-to-pem'
 
 const logger = createLogger('auth')
 
@@ -9,7 +12,9 @@ const jwksUrl =
 
 export async function handler(event) {
   try {
-    const jwtToken = await verifyToken(event.authorizationToken)
+    const jwtToken = await verifyToken(
+      event.headers.authorization || event.headers.Authorization
+    )
     logger.info('User was authorized', jwtToken)
 
     return {
@@ -46,7 +51,7 @@ export async function handler(event) {
 
 async function verifyToken(authHeader) {
   const token = getToken(authHeader)
-  const jwt = jsonwebtoken.decode(token, { complete: true })
+  const jwt = decode(token, { complete: true })
 
   // TODO: Implement token verification
   const response = await Axios(jwksUrl)

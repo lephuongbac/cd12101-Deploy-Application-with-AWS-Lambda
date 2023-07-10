@@ -1,4 +1,5 @@
 import { todoModel } from '../../model/todo.js'
+import { getUserId } from '../auth/jwt.js'
 
 export async function handler(event) {
   // TODO: Get all TODO items for a current user
@@ -8,6 +9,6 @@ export async function handler(event) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true
     },
-    body: JSON.stringify(await todoModel.getAll(), null, 2)
+    body: JSON.stringify(await todoModel.getAll(getUserId(event)), null, 2)
   }
 }

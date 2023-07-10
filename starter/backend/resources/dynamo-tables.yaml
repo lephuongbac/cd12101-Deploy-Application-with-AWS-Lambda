@@ -25,3 +25,11 @@ Resources:
               KeyType: RANGE
           Projection:
             ProjectionType: ALL # What attributes will be copied to an index
+  onlyBody:
+    Type: 'AWS::ApiGateway::RequestValidator'
+    Properties:
+      Name: 'only-body'
+      RestApiId:
+        Ref: ApiGatewayRestApi
+      ValidateRequestBody: true
+      ValidateRequestParameters: false
