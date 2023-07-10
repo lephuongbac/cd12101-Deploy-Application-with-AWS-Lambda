@@ -49,16 +49,26 @@ export class TodoModel {
     return dbTodo
   }
   async getAll(userId) {
+    // const params = {
+    //   TableName: this.tableName,
+    //   KeyConditionExpression: '#userId = :userId',
+    //   FilterExpression: 'userId = :userId',
+    //   ExpressionAttributeValues: {
+    //     ':userId': userId
+    //   }
+    // }
     const params = {
-      TableName: this.tableName,
-      KeyConditionExpression: '#userId = :userId',
-      FilterExpression: 'userId = :userId',
       ExpressionAttributeValues: {
-        ':userId': userId
-      }
+        ':userId': {
+          S: userId
+        }
+      },
+      KeyConditionExpression: 'userId = :userId',
+      // ProjectionExpression: 'userId',
+      TableName: this.tableName
     }
     console.log(params)
-    const result = await docClient.send(new ScanCommand(params))
+    const result = await docClient.send(new QueryCommand(params))
     return result.Items
   }
   async update(todoUpdate, todoId, userId) {

@@ -12,9 +12,8 @@ const jwksUrl =
 
 export async function handler(event) {
   try {
-    const jwtToken = await verifyToken(
-      event.headers.authorization || event.headers.Authorization
-    )
+    console.log('event', event)
+    const jwtToken = await verifyToken(event.authorizationToken)
     logger.info('User was authorized', jwtToken)
 
     return {

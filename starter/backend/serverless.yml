@@ -45,6 +45,12 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+          documentation:
+            summary: 'Create a new todo item'
+            description: 'Create a new todo item'
+            requestModels:
+              'application/json': CreateTodoRequest
+          reqValidatorName: onlyBody
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -60,6 +66,12 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
+          documentation:
+            summary: 'Update a todo item'
+            description: 'Update a todo item'
+            requestModels:
+              'application/json': UpdateTodoRequest
+          reqValidatorName: onlyBody
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -98,5 +110,37 @@ functions:
 custom:
   serverless-offline:
     httpPort: 3000
+  documentation:
+    api:
+      info:
+        version: '1.0.0'
+        title: udacity
+        description: validation
+    models:
+      - name: CreateTodoRequest
+        contentType: 'application/json'
+        schema:
+          required:
+            - name
+            - dueDate
+          properties:
+            name:
+              type: string
+            dueDate:
+              type: string
+      - name: UpdateTodoRequest
+        contentType: 'application/json'
+        schema:
+          required:
+            - name
+            - dueDate
+            - done
+          properties:
+            name:
+              type: string
+            dueDate:
+              type: string
+            done:
+              type: boolean
 resources:
   - ${file(./resources/dynamo-tables.yaml)}
