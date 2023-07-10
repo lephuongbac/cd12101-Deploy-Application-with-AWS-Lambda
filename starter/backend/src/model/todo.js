@@ -12,8 +12,17 @@ import { nanoid } from 'nanoid'
 const client = new DynamoDBClient()
 const docClient = DynamoDBDocumentClient.from(client)
 import { createLogger } from '../utils/logger.mjs'
+import {
+  S3Client,
+  AbortMultipartUploadCommand,
+  PutObjectCommand
+} from '@aws-sdk/client-s3'
+import S3 from 'aws-sdk/clients/s3.js'
 
 const logger = createLogger('TodoModel')
+
+// const s3Client = new S3Client({ region: 'us-east-2' })
+const s3Client = new S3({ signatureVersion: 'v4' })
 
 export class TodoModel {
   tableName
@@ -78,6 +87,26 @@ export class TodoModel {
     await docClient.send(new DeleteCommand(params))
 
     return todoId
+  }
+  async getPresignedUrl(todoId) {
+    // logger.info('Getting a presigned url', todoId)
+    // const params = {
+    //   Bucket: process.env.ATTACHMENT_S3_BUCKET,
+    //   Key: todoId,
+    //   Expires: 1000
+    // }
+    // const command = new PutObjectCommand(params)
+    // const url = await getSignedUrl(s3Client, command)
+    // return url
+    console.log('Generating URL', process.env.ATTACHMENT_S3_BUCKET)
+
+    const url = s3Client.getSignedUrl('putObject', {
+      Bucket: process.env.ATTACHMENT_S3_BUCKET,
+      Key: todoId,
+      Expires: 1000
+    })
+    console.log(url)
+    return url
   }
 }
 export const todoModel = new TodoModel()

@@ -8,6 +8,9 @@ GET http://localhost:3000/dev/todos
 ### test GET /getSchema
 DELETE http://localhost:3000/dev/todos/53uFmgVKXQFuooKKMRTOJ
 
+### generate prisigned URL
+POST http://localhost:3000/dev/todos/53uFmgVKXQFuooKKMRTOJ/attachment
+
 ### test POST /createSchema
 POST http://localhost:3000/dev/todos
 Content-Type: application/json
