@@ -1,0 +1,19 @@
+// check the api using api client
+### test GET /getSchema
+GET http://localhost:3000/dev/schema?id=w1qbLlcdHNwi5zLyBBFUK
+
+### test GET /getSchema
+GET http://localhost:3000/dev/todos
+
+### test GET /getSchema
+DELETE http://localhost:3000/dev/todos/53uFmgVKXQFuooKKMRTOJ
+
+### test POST /createSchema
+POST http://localhost:3000/dev/todos
+Content-Type: application/json
+# Authorization: Bearer {JWT-token}
+
+{
+    "name": "Buy bread",
+    "dueDate": "2022-12-12"
+}

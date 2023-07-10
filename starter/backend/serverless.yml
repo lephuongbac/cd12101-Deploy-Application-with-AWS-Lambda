@@ -2,15 +2,23 @@ service: serverless-todo-app
 
 plugins:
   - serverless-iam-roles-per-function
+  - serverless-plugin-tracing
+  - serverless-offline
 
 frameworkVersion: '3'
 
 provider:
   name: aws
   runtime: nodejs14.x
+  stage: ${opt:stage, 'dev'}
+  region: us-east-2
+  environment:
+    TODOS_TABLE: Todos-${self:provider.stage}
+    TODOS_CREATED_AT_INDEX: CreatedAtIndex
+    INDEX_NAME: TodoIdIndex
+    ATTACHMENT_S3_BUCKET: todobucket-${self:provider.stage}
 
 functions:
-
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
@@ -29,6 +37,12 @@ functions:
       - http:
           method: post
           path: todos
+          cors: true
+    # iamRoleStatements:
+    #   - Effect: Allow
+    #     Action:
+    #       - dynamodb:PutItem
+    #     Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
   # TODO: Configure this function
   UpdateTodo:
@@ -37,6 +51,13 @@ functions:
       - http:
           method: patch
           path: todos/{todoId}
+          cors: true
+    # iamRoleStatements:
+    #   - Effect: Allow
+    #     Action:
+    #       - dynamodb:Query
+    #       - dynamodb:UpdateItem
+    #     Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
   # TODO: Configure this function
   DeleteTodo:
@@ -45,6 +66,13 @@ functions:
       - http:
           method: delete
           path: todos/{todoId}
+          cors: true
+    # iamRoleStatements:
+    #   - Effect: Allow
+    #     Action:
+    #       - dynamodb:Query
+    #       - dynamodb:DeleteItem
+    #     Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
   # TODO: Configure this function
   GenerateUploadUrl:
@@ -53,7 +81,9 @@ functions:
       - http:
           method: post
           path: todos/{todoId}/attachment
-
+          cors: true
+custom:
+  serverless-offline:
+    httpPort: 3000
 resources:
-  Resources:
-    # TODO: Add any necessary AWS resources
+  - ${file(./resources/dynamo-tables.yaml)}

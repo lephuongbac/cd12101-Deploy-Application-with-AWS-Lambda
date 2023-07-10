@@ -1,8 +1,14 @@
+import { todoModel } from '../../model/todo.js'
 
 export function handler(event) {
   const todoId = event.pathParameters.todoId
-
-  // TODO: Remove a TODO item by id
-  return undefined
+  console.log('deleteTodo', todoId)
+  return {
+    statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true
+    },
+    body: JSON.stringify(todoModel.delete(todoId, '123'))
+  }
 }
-
